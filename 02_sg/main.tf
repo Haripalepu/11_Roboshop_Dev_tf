@@ -161,6 +161,15 @@ resource "aws_security_group_rule" "mongodb_user" {
   security_group_id        = module.mongodb.sg_id
 }
 
+resource "aws_security_group_rule" "redis_vpn" {
+  source_security_group_id = module.vpn.sg_id
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  security_group_id        = module.redis.sg_id
+}
+
 #redis is accepting connections from cart instance
 #We are adding a rule in redis sg group to allow 6379 port to cart ip/sg group
 resource "aws_security_group_rule" "redis_cart" {
