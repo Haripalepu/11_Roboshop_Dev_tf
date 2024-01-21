@@ -1,0 +1,9 @@
+Commands to run this repo 
+
+1. go to 01_vpc
+2. terraform init (or) terraform init -reconfigure
+3. terrafrom plan
+4. terraform apply -auto-approve
+5. terraform destroy -auto-approve
+
+then go to 02_sg and run same commands 
