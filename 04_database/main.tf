@@ -170,7 +170,7 @@ module "rabbitmq" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [data.aws_ssm_parameter.rabbitmq_sg_id.value]
   subnet_id              = local.database_subnet_id
-
+  iam_instance_profile   = "Ansible_role_ec2_admin_access"
   tags = merge(
     var.common_tags,
     {
