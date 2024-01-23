@@ -1,4 +1,5 @@
 
+
 variable "common_tags" {
     default = {
         Project = "roboshop"
@@ -7,6 +8,11 @@ variable "common_tags" {
     }  
 }
 
+variable "tags" {
+  default = {
+    component = "alb"
+  }
+}
 variable "project_name" {
     default = "roboshop" 
 }

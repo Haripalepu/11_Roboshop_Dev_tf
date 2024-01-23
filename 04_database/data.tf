@@ -20,7 +20,7 @@ data "aws_ami" "centos8"{    #When ever the ami_id changes we will get the lates
 }
 
 #The security group id is stored in paramterstore and now we are fetching it using data store
-data "aws_ssm_parameter" "mongodb_sg_id" { #resource name in parameter.tf file 
+data "aws_ssm_parameter" "mongodb_sg_id" { #resource name in parameter.tf file 11th line.
     name = "/${var.project_name}/${var.environment}/mongodb_sg_id"
 }
 

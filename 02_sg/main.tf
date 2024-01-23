@@ -121,7 +121,17 @@ module "alb" {
     #sg_ingress_rules = var.mongodb_sg_ingress_rules
 }
 
-#Openvpn
+#Alb security group rule it should accept connects only form vpn as it is internal/private LB
+resource "aws_security_group_rule" "alb_vpn" {
+  source_security_group_id = module.vpn.sg_id
+  type                     = "ingress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp" 
+  security_group_id = module.alb.sg_id
+}
+
+#Openvpn security group rule
 resource "aws_security_group_rule" "vpn_home" {
   security_group_id = module.vpn.sg_id
   type                     = "ingress"
@@ -233,6 +243,16 @@ resource "aws_security_group_rule" "catalogue_vpn" {
   type                     = "ingress"
   from_port                = 22
   to_port                  = 22
+  protocol                 = "tcp"
+  security_group_id        = module.catalogue.sg_id
+}
+
+#to test from outisde using alb we are giving port 8080
+resource "aws_security_group_rule" "catalogue_vpn_http_alb" {
+  source_security_group_id = module.vpn.sg_id
+  type                     = "ingress"
+  from_port                = 8080
+  to_port                  = 8080
   protocol                 = "tcp"
   security_group_id        = module.catalogue.sg_id
 }
