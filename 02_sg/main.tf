@@ -110,7 +110,7 @@ module "user" {
 }
 
 
-#Alb security group
+#App Alb security group(Private load balancer)
 module "alb" {
     source = "../../09_Terraform_Modules/02_sg_module"
     project_name = var.project_name
@@ -119,6 +119,26 @@ module "alb" {
     sg_name = "alb"
     sg_description = "SecurityGroup for ALB"
     #sg_ingress_rules = var.mongodb_sg_ingress_rules
+}
+
+#web_alb security group(Public load balancer)
+module "web_alb" {
+    source = "../../09_Terraform_Modules/02_sg_module"
+    project_name = var.project_name
+    environment = var.environment
+    vpc_id = data.aws_ssm_parameter.vpc_id.value
+    sg_name = "web_alb"
+    sg_description = "SecurityGroup for web ALB"
+}
+
+#Web ALB security group rule it should accept connects only form internet as it is public LB
+resource "aws_security_group_rule" "web_alb" {
+  cidr_blocks              = ["0.0.0.0/0"]
+  type                     = "ingress"
+  from_port                = 443 #If we are using 443 then certifacte required 
+  to_port                  = 443
+  protocol                 = "tcp" 
+  security_group_id = module.web_alb.sg_id
 }
 
 #Alb security group rule it should accept connects only form vpn as it is internal/private LB
@@ -131,6 +151,15 @@ resource "aws_security_group_rule" "alb_vpn" {
   security_group_id = module.alb.sg_id
 }
 
+#App ALB should accept connects from web server
+resource "aws_security_group_rule" "alb_web" {
+  source_security_group_id = module.web.sg_id
+  type                     = "ingress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp" 
+  security_group_id = module.alb.sg_id
+}
 #Openvpn security group rule
 resource "aws_security_group_rule" "vpn_home" {
   security_group_id = module.vpn.sg_id

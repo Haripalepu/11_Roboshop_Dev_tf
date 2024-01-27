@@ -1,0 +1,8 @@
+
+http://catalogue.alb-dev.haripalepu.cloud/health
+http://catalogue.alb-dev.haripalepu.cloud/categories
+
+Command to increase load
+while true ; do curl http://catalogue.alb-dev.haripalepu.cloud/categories ; done
+
+or login to the server and run this command "yes > /dev/null &"
