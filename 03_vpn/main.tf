@@ -19,7 +19,7 @@ module "ec2_instance" {
   )
 }
 
-
+#Connect the VPN before creating 04_database
 #Login to the vpn server and cat the keypair in root and configure in vpn client
 
 #To check the userdata script logos 
