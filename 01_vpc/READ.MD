@@ -1,1 +1,1 @@
-Private instances cart, user, catalogue etc will communicate using private application load balancer.
+Private instances cart, user, catalogue etc will communicate using private application load balancer
